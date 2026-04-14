@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Fizetés - Elektro{% endblock %}
+
+{% block content %}
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Fizetés oldal</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Kezdőoldal</a></li>
+        <li class="breadcrumb-item"><a href="#">Oldalak</a></li>
+        <li class="breadcrumb-item active text-white">Fizetés</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- Checkout Page Start -->
+<div class="container-fluid bg-light overflow-hidden py-5">
+    <div class="container py-5">
+        <h1 class="mb-4 wow fadeInUp" data-wow-delay="0.1s">Számlázási adatok</h1>
+        <form action="{{ url_for('checkout') }}" method="POST">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Keresztnév<sup>*</sup></label>
+                                <input type="text" class="form-control" name="first_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-item w-100">
+                                <label class="form-label my-3">Vezetéknév<sup>*</sup></label>
+                                <input type="text" class="form-control" name="last_name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">E-mail cím<sup>*</sup></label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Cím<sup>*</sup></label>
+                        <input type="text" class="form-control" name="address" placeholder="Házszám Utca név" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Város<sup>*</sup></label>
+                        <input type="text" class="form-control" name="city" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Ország<sup>*</sup></label>
+                        <input type="text" class="form-control" name="country" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Irányítószám<sup>*</sup></label>
+                        <input type="text" class="form-control" name="postal_code" required>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label my-3">Mobil<sup>*</sup></label>
+                        <input type="tel" class="form-control" name="phone" required>
+                    </div>
+                    <div class="form-check my-3">
+                        <input type="checkbox" class="form-check-input" id="Account-1" name="create_account">
+                        <label class="form-check-label" for="Account-1">Fiók létrehozása?</label>
+                    </div>
+                    <hr>
+                    <div class="form-check my-3">
+                        <input class="form-check-input" type="checkbox" id="Address-1" name="different_address">
+                        <label class="form-check-label" for="Address-1">Szállítás másik címre?</label>
+                    </div>
+                    <div class="form-item">
+                        <textarea name="notes" class="form-control" spellcheck="false" cols="30" rows="11"
+                            placeholder="Megrendelés megjegyzések (opcionális)"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col" class="text-start">Név</th>
+                                    <th scope="col">Modell</th>
+                                    <th scope="col">Ár</th>
+                                    <th scope="col">Mennyiség</th>
+                                    <th scope="col">Összesen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr class="text-center">
+                                    <th scope="row" class="text-start py-4">
+                                        {{ item.product.name }}
+                                    </th>
+                                    <td class="py-4">{{ item.product.model }}</td>
+                                    <td class="py-4">{{ item.product.price }} Ft</td>
+                                    <td class="py-4 text-center">{{ item.quantity }}</td>
+                                    <td class="py-4">{{ (item.product.price * item.quantity)|int }} Ft</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <th scope="row">
+                                    </th>
+                                    <td class="py-4"></td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4">
+                                        <p class="mb-0 text-dark py-2">Részösszeg</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <div class="py-2 text-center border-bottom border-top">
+                                            <p class="mb-0 text-dark">{{ total|int }} Ft</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                    </th>
+                                    <td class="py-4">
+                                        <p class="mb-0 text-dark py-4">Szállítás</p>
+                                    </td>
+                                    <td colspan="3" class="py-4">
+                                        <div class="form-check text-start">
+                                            <input type="radio" class="form-check-input bg-primary border-0"
+                                                id="Shipping-1" name="shipping_cost" value="0" checked>
+                                            <label class="form-check-label" for="Shipping-1">Ingyenes szállítás</label>
+                                        </div>
+                                        <div class="form-check text-start">
+                                            <input type="radio" class="form-check-input bg-primary border-0"
+                                                id="Shipping-2" name="shipping_cost" value="15">
+                                            <label class="form-check-label" for="Shipping-2">Állandó díj: 15.00 Ft</label>
+                                        </div>
+                                        <div class="form-check text-start">
+                                            <input type="radio" class="form-check-input bg-primary border-0"
+                                                id="Shipping-3" name="shipping_cost" value="8">
+                                            <label class="form-check-label" for="Shipping-3">Helyi felvétel: 8.00 Ft</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                    </th>
+                                    <td class="py-4">
+                                        <p class="mb-0 text-dark text-uppercase py-2">ÖSSZESEN</p>
+                                    </td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4">
+                                        <div class="py-2 text-center border-bottom border-top">
+                                            <p class="mb-0 text-dark" id="final-total">{{ (total + 15)|int }} Ft</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-3 text-uppercase w-100">
+                        Megrendelés véglegesítése
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout Page End -->
+
+<script>
+document.querySelectorAll('input[name="shipping_cost"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const shippingCost = parseFloat(this.value);
+        const subtotal = {{ total }};
+        const total = subtotal + shippingCost;
+        document.getElementById('final-total').textContent = total + ' Ft';
+    });
+});
+</script>
+
+{% endblock %}

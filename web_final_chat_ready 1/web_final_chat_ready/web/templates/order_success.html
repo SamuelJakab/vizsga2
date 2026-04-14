@@ -1,0 +1,565 @@
+{% extends "base.html" %}
+
+{% block title %}Megrendelés megerősítve - Elektro{% endblock %}
+
+{% block content %}
+
+<!-- Order Success Header -->
+<div class="container-fluid page-header py-5 bg-success text-white">
+    <div class="container text-center">
+        <div class="mb-4 wow fadeInUp" data-wow-delay="0.1s">
+            <i class="fas fa-check-circle" style="font-size: 4rem;"></i>
+        </div>
+        <h1 class="display-5 mb-3 wow fadeInUp" data-wow-delay="0.2s">Megrendelés megerősítve!</h1>
+        <p class="fs-5 wow fadeInUp" data-wow-delay="0.3s">Köszönjük a vásárlást! A rendelésed feldolgozás alatt van.</p>
+    </div>
+</div>
+<!-- Order Success Header End -->
+
+<!-- Order Details Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Left Column - Order Info -->
+            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.1s">
+                
+                <!-- Order Number Card -->
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h6 class="text-muted mb-1">Megrendelés száma</h6>
+                                <h3 class="text-primary mb-0">#{{ order.id }}</h3>
+                            </div>
+                            <div class="col-auto">
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-check-circle me-2"></i>Megerősítve
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Timeline -->
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4">Megrendelés státusza</h5>
+                        <div class="timeline">
+                            <!-- Step 1 -->
+                            <div class="timeline-item mb-4 pb-4 border-bottom">
+                                <div class="d-flex">
+                                    <div class="timeline-marker bg-success text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px; flex-shrink: 0;">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="ms-3 mt-1">
+                                        <h6 class="mb-1">Megrendelés feldolgozása</h6>
+                                        <p class="text-muted mb-0">{{ order.created_at.strftime('%Y. %B %d. - %H:%M') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="timeline-item mb-4 pb-4 border-bottom">
+                                <div class="d-flex">
+                                    <div class="timeline-marker bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px; flex-shrink: 0;">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="ms-3 mt-1">
+                                        <h6 class="mb-1">Csomag előkészítése</h6>
+                                        <p class="text-muted mb-0">Hamarosan megkezdődik</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="timeline-item mb-4 pb-4 border-bottom">
+                                <div class="d-flex">
+                                    <div class="timeline-marker bg-light text-muted rounded-circle d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px; flex-shrink: 0;">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <div class="ms-3 mt-1">
+                                        <h6 class="mb-1">Szállítás</h6>
+                                        <p class="text-muted mb-0">2-3 munkanap alatt</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="timeline-item">
+                                <div class="d-flex">
+                                    <div class="timeline-marker bg-light text-muted rounded-circle d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px; flex-shrink: 0;">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <div class="ms-3 mt-1">
+                                        <h6 class="mb-1">Kézbesítés</h6>
+                                        <p class="text-muted mb-0">Várható: {{ (order.created_at + timedelta(days=5)).strftime('%Y. %B %d.') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4">Megrendelt termékek</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Termék</th>
+                                        <th class="text-center">Mennyiség</th>
+                                        <th class="text-end">Egységár</th>
+                                        <th class="text-end">Összesen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items %}
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <h6 class="mb-1">{{ item.product.name }}</h6>
+                                                <small class="text-muted">{{ item.product.model }}</small>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">{{ item.quantity }} db</td>
+                                        <td class="text-end">{{ item.price|int }} Ft</td>
+                                        <td class="text-end">
+                                            <strong>{{ (item.price * item.quantity)|int }} Ft</strong>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4">Szállítási cím</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Címzett</h6>
+                                <p class="mb-0">
+                                    <strong>{{ order.first_name }} {{ order.last_name }}</strong><br>
+                                    {{ order.address }}<br>
+                                    {{ order.postal_code }} {{ order.city }}<br>
+                                    {{ order.country }}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Elérhetőség</h6>
+                                <p class="mb-0">
+                                    <strong>E-mail:</strong> {{ order.email }}<br>
+                                    <strong>Telefon:</strong> {{ order.phone }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Order Summary -->
+            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                
+                <!-- Order Summary Card -->
+                <div class="card border-0 shadow sticky-top" style="top: 20px;">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4">Rendelés összesítő</h5>
+                        
+                        <!-- Items Count -->
+                        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                            <span>Termékek ({{ order.items|length }} db):</span>
+                            <strong>
+                                {{ (order.total_price - order.shipping_cost + order.discount)|int }} Ft
+                            </strong>
+                        </div>
+
+                        <!-- Shipping -->
+                        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                            <span>Szállítás:</span>
+                            <strong>{{ order.shipping_cost|int }} Ft</strong>
+                        </div>
+
+                        <!-- Discount -->
+                        {% if order.discount > 0 %}
+                        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom text-success">
+                            <span>Kedvezmény:</span>
+                            <strong>-{{ order.discount|int }} Ft</strong>
+                        </div>
+                        {% endif %}
+
+                        <!-- Total -->
+                        <div class="d-flex justify-content-between mb-4">
+                            <h6 class="mb-0">Végösszeg:</h6>
+                            <h4 class="text-primary mb-0">{{ order.total_price|int }} Ft</h4>
+                        </div>
+
+                        <!-- Order Info Box -->
+                        <div class="bg-light rounded p-3 mb-4">
+                            <h6 class="mb-2"><i class="fas fa-info-circle text-primary me-2"></i>Rendelés információ</h6>
+                            <p class="text-muted small mb-1">
+                                <strong>Rendelés dátuma:</strong><br>
+                                {{ order.created_at.strftime('%Y. %B %d. %H:%M') }}
+                            </p>
+                            <p class="text-muted small mb-0">
+                                <strong>Rendelés ID:</strong><br>
+                                #{{ order.id }}
+                            </p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button class="btn btn-primary rounded-pill py-2" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                                <i class="fas fa-receipt me-2"></i>Számla letöltése
+                            </button>
+                            <a href="{{ url_for('home') }}" class="btn btn-outline-primary rounded-pill py-2">
+                                <i class="fas fa-shopping-bag me-2"></i>Tovább vásárlás
+                            </a>
+                        </div>
+
+                        <!-- Contact Support -->
+                        <div class="p-3 bg-light rounded text-center">
+                            <p class="text-muted small mb-2">Kérdésed van?</p>
+                            <a href="{{ url_for('contact') }}" class="btn btn-sm btn-link text-decoration-none">
+                                <i class="fas fa-headset me-1"></i>Ügyfélszolgálat
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Helpful Info -->
+                <div class="card border-0 shadow mt-4">
+                    <div class="card-body p-4">
+                        <h6 class="card-title mb-3">Hasznos információk</h6>
+                        <ul class="list-unstyled small text-muted">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                E-mailban küldünk nyomkövetési számot
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                14 napos pénzvisszafizetési garancia
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Ingyenes csere 15 napon belül
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Biztonságos csomagolás
+                            </li>
+                            <li class="mb-0">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                24/7 ügyfélszolgálat
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Order Details End -->
+
+<!-- Next Steps Section -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <h3 class="text-center mb-5">Mi történik most?</h3>
+        <div class="row g-4">
+            <!-- Step 1 -->
+            <div class="col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="card border-0 shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="fas fa-envelope fa-2x"></i>
+                            </div>
+                        </div>
+                        <h6 class="card-title">E-mail megerősítés</h6>
+                        <p class="text-muted small">Egy e-mail megerősítésben részletezettük a rendelésed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="card border-0 shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="fas fa-box fa-2x"></i>
+                            </div>
+                        </div>
+                        <h6 class="card-title">Csomag előkészítése</h6>
+                        <p class="text-muted small">Az előkészítés szokásosan 24 órán belül megtörténik.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="card border-0 shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="fas fa-truck fa-2x"></i>
+                            </div>
+                        </div>
+                        <h6 class="card-title">Szállítás megkezdése</h6>
+                        <p class="text-muted small">Nyomkövetési szám e-mailban érkezik.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="card border-0 shadow h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="fas fa-home fa-2x"></i>
+                            </div>
+                        </div>
+                        <h6 class="card-title">Kézbesítés</h6>
+                        <p class="text-muted small">A csomag 2-3 munkanap alatt megérkezik.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Next Steps End -->
+
+<!-- FAQ Section -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="text-center mb-5">Gyakran feltett kérdések</h3>
+                
+                <div class="accordion" id="faqAccordion">
+                    <!-- FAQ 1 -->
+                    <div class="accordion-item border-0 shadow mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq1">
+                                <i class="fas fa-question-circle text-primary me-2"></i>
+                                Hogyan követhetem nyomon a megrendelésemet?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Miután a csomag szállítmányozónál van, e-mailban fog érkezni egy nyomkövetési szám. 
+                                Ezzel nyomon követheted a csomag helyzetét valós időben.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="accordion-item border-0 shadow mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq2">
+                                <i class="fas fa-question-circle text-primary me-2"></i>
+                                Mi van, ha a termék nem felel meg az elvárásaimnak?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Nincs probléma! 14 napos pénzvisszafizetési garanciánk van. Ha nem vagy megelégedett, 
+                                ingyenesen visszaküldheted a terméket és teljes visszatérítésben részesülsz.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="accordion-item border-0 shadow mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq3">
+                                <i class="fas fa-question-circle text-primary me-2"></i>
+                                Meg tudom módosítani a rendelésem?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Ha a csomag még nem készült ki, módosítható. Kérjük, vedd fel a kapcsolatot az 
+                                ügyfélszolgálattal az alábbi e-mail címen: info@elektro.hu
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="accordion-item border-0 shadow">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq4">
+                                <i class="fas fa-question-circle text-primary me-2"></i>
+                                Meg tudom adni a csomagot másnak?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Igen! Ha másnak szeretnéd adni, jelezd e-mailban az ügyfélszolgálatnak a nyomkövetési számmal 
+                                és az új szállítási cím megadásával.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FAQ End -->
+
+<!-- Continue Shopping Section -->
+<div class="container-fluid bg-primary py-5">
+    <div class="container text-center text-white">
+        <h3 class="mb-3">Tetszett a vásárlás?</h3>
+        <p class="mb-4">Fedezd fel további termékeinket és kérj 10% kedvezményt a következő rendeléshez!</p>
+        <div class="row g-2 justify-content-center">
+            <div class="col-auto">
+                <a href="{{ url_for('shop') }}" class="btn btn-light rounded-pill px-4 py-2">
+                    <i class="fas fa-shopping-bag me-2"></i>Tovább vásárlás
+                </a>
+            </div>
+            <div class="col-auto">
+                <a href="{{ url_for('home') }}" class="btn btn-outline-light rounded-pill px-4 py-2">
+                    <i class="fas fa-home me-2"></i>Kezdőoldal
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Continue Shopping End -->
+
+<!-- Invoice Modal -->
+<div class="modal fade" id="invoiceModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Számla - Rendelés #{{ order.id }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="invoice-container p-4" id="invoiceContent">
+                    <!-- Invoice Header -->
+                    <div class="text-center mb-4 pb-4 border-bottom">
+                        <h2 class="text-primary mb-2">ELEKTRO</h2>
+                        <p class="text-muted">Elektronikai Weboldal</p>
+                    </div>
+
+                    <!-- Invoice Details -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Számla szám:</h6>
+                            <p class="mb-0"><strong>#{{ order.id }}</strong></p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <h6 class="text-muted mb-2">Dátum:</h6>
+                            <p class="mb-0">{{ order.created_at.strftime('%Y. %B %d.') }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Billing Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Számlázási cím:</h6>
+                            <p class="mb-0">
+                                {{ order.first_name }} {{ order.last_name }}<br>
+                                {{ order.address }}<br>
+                                {{ order.postal_code }} {{ order.city }}<br>
+                                {{ order.country }}<br>
+                                {{ order.email }}<br>
+                                {{ order.phone }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <table class="table table-sm mb-4">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Termék</th>
+                                <th class="text-center">Mennyiség</th>
+                                <th class="text-end">Egységár</th>
+                                <th class="text-end">Összesen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-end">{{ item.price|int }} Ft</td>
+                                <td class="text-end">{{ (item.price * item.quantity)|int }} Ft</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!-- Totals -->
+                    <div class="row justify-content-end mb-4">
+                        <div class="col-md-6">
+                            <table class="table table-sm border-top border-bottom">
+                                <tr>
+                                    <td>Részösszeg:</td>
+                                    <td class="text-end">{{ (order.total_price - order.shipping_cost + order.discount)|int }} Ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Szállítás:</td>
+                                    <td class="text-end">{{ order.shipping_cost|int }} Ft</td>
+                                </tr>
+                                {% if order.discount > 0 %}
+                                <tr class="text-success">
+                                    <td>Kedvezmény:</td>
+                                    <td class="text-end">-{{ order.discount|int }} Ft</td>
+                                </tr>
+                                {% endif %}
+                                <tr class="fw-bold">
+                                    <td>Végösszeg:</td>
+                                    <td class="text-end text-primary">{{ order.total_price|int }} Ft</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="text-center text-muted pt-4 border-top small">
+                        <p class="mb-1">Köszönjük a vásárlást az Elektro weboldalon!</p>
+                        <p class="mb-0">Ügyfélszolgálat: info@elektro.hu | Telefon: (+36) 1234 567890</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                <button type="button" class="btn btn-primary" onclick="printInvoice()">
+                    <i class="fas fa-print me-2"></i>Nyomtatás
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function printInvoice() {
+    const printWindow = window.open('', '', 'height=500, width=800');
+    printWindow.document.write(document.getElementById('invoiceContent').innerHTML);
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+
+{% endblock %}

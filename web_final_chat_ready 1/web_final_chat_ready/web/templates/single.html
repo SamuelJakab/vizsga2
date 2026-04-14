@@ -1,0 +1,716 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Elektro{% endblock %}
+
+{% block content %}
+
+<!-- Single Product Page Header Start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">{{ product.name }}</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Kezdőoldal</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('shop') }}">Bolt</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('shop', category=product.category) }}">{{ product.category }}</a></li>
+        <li class="breadcrumb-item active text-white">{{ product.name }}</li>
+    </ol>
+</div>
+<!-- Single Product Page Header End -->
+
+<!-- Single Product Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Product Images -->
+            <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="position-relative">
+                    {% if product.image %}
+                        <img id="mainImage" src="{{ url_for('static', filename=product.image) }}" 
+                             class="img-fluid w-100 rounded" alt="{{ product.name }}" 
+                             style="max-height: 500px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                             style="height: 500px;">
+                            <div class="text-center">
+                                <i class="fas fa-image fa-5x text-muted mb-3"></i>
+                                <p class="text-muted">Nincs kép</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Discount Badge -->
+                    {% if product.discount > 0 %}
+                        <div class="badge bg-danger position-absolute top-0 start-0 m-3">
+                            -{{ product.discount|int }}%
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Stock Status Badge -->
+                    <div class="position-absolute bottom-0 end-0 m-3">
+                        {% if product.stock > 0 %}
+                            <span class="badge bg-success">Raktáron</span>
+                        {% else %}
+                            <span class="badge bg-danger">Nincs raktáron</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Image Gallery (Future Feature) -->
+                <div class="mt-3">
+                    <p class="text-muted small"><i class="fas fa-camera me-2"></i>Fő termék képe</p>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.3s">
+                <!-- Product Info -->
+                <div class="mb-5">
+                    <!-- Category -->
+                    <a href="{{ url_for('shop', category=product.category) }}" 
+                       class="d-inline-block mb-2">
+                        <span class="badge bg-primary">{{ product.category }}</span>
+                    </a>
+
+                    <!-- Product Name -->
+                    <h1 class="display-5 mb-2">{{ product.name }}</h1>
+
+                    <!-- Model -->
+                    {% if product.model %}
+                        <p class="text-muted fs-5 mb-3">
+                            <strong>Modell:</strong> {{ product.model }}
+                        </p>
+                    {% endif %}
+
+                    <!-- Rating -->
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="d-flex mb-2">
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star-half-alt text-primary"></i>
+                        </div>
+                        <div class="ms-3">
+                            <span class="text-muted">(12 értékelés)</span>
+                        </div>
+                    </div>
+
+                    <!-- Price Section -->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                {% if product.discount > 0 %}
+                                    <div>
+                                        <span class="text-muted text-decoration-line-through me-2">
+                                            {{ (product.price / (1 - product.discount/100))|int }} Ft
+                                        </span>
+                                        <h2 class="text-primary mb-0">{{ product.price|int }} Ft</h2>
+                                    </div>
+                                {% else %}
+                                    <h2 class="text-primary mb-0">{{ product.price|int }} Ft</h2>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Termék leírása</h5>
+                        <p class="text-muted">{{ product.description }}</p>
+                    </div>
+
+                    <!-- Stock Info -->
+                    <div class="mb-4 p-3 bg-light rounded">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <p class="text-muted mb-1"><small>Készlet</small></p>
+                                <h6 class="mb-0">{{ product.stock }} db</h6>
+                            </div>
+                            <div class="col-6">
+                                <p class="text-muted mb-1"><small>Szállítás</small></p>
+                                <h6 class="mb-0"><i class="fas fa-truck text-primary me-2"></i>2-3 nap</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart Section -->
+                    <div class="mb-4">
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <div class="input-group" style="width: 120px;">
+                                    <button class="btn btn-outline-primary rounded-start" type="button" id="btnMinus">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="text" id="quantity" class="form-control text-center" 
+                                           value="1" readonly style="border-left: 0; border-right: 0;">
+                                    <button class="btn btn-outline-primary rounded-end" type="button" id="btnPlus">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                {% if product.stock > 0 %}
+                                    <button type="button" class="btn btn-primary rounded-pill py-2 px-5" 
+                                            id="addToCartBtn" data-product-id="{{ product.id }}">
+                                        <i class="fas fa-shopping-cart me-2"></i>Kosárba
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary rounded-pill py-2 px-5" disabled>
+                                        <i class="fas fa-times me-2"></i>Nem elérhető
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist & Share -->
+                    <div class="mb-4">
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <button class="btn btn-outline-primary rounded-pill px-4">
+                                    <i class="fas fa-heart me-2"></i>Kedvencekhez
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-toggle="dropdown">
+                                    <i class="fas fa-share-alt me-2"></i>Megosztás
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="fab fa-facebook me-2"></i>Facebook</a>
+                                    <a class="dropdown-item" href="#"><i class="fab fa-twitter me-2"></i>Twitter</a>
+                                    <a class="dropdown-item" href="#"><i class="fab fa-pinterest me-2"></i>Pinterest</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Features -->
+                    <div class="pt-4 border-top">
+                        <h5 class="mb-3">Szállítási információ</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Ingyenes szállítás</strong> 69.990 Ft feletti rendelésekhez
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>14 napos pénzvisszafizetési garancia</strong>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Biztonságos fizetés</strong> minden módszerrel
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>24/7 ügyfélszolgálat</strong> rendelkezésedre
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Single Product End -->
+
+<!-- Product Details Tabs Start -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <ul class="nav nav-pills mb-4 d-flex" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active px-4 py-3" id="description-tab" data-bs-toggle="pill" 
+                        data-bs-target="#description-content" type="button" role="tab">
+                    <i class="fas fa-align-left me-2"></i>Leírás
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4 py-3" id="details-tab" data-bs-toggle="pill" 
+                        data-bs-target="#details-content" type="button" role="tab">
+                    <i class="fas fa-info-circle me-2"></i>Adatok
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4 py-3" id="reviews-tab" data-bs-toggle="pill" 
+                        data-bs-target="#reviews-content" type="button" role="tab">
+                    <i class="fas fa-comments me-2"></i>Értékelések
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Description Tab -->
+            <div class="tab-pane fade show active" id="description-content" role="tabpanel">
+                <div class="bg-white rounded p-5">
+                    <h4 class="mb-4">Termék leírása</h4>
+                    <p class="text-muted mb-3">{{ product.description }}</p>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Előnyök</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Kiváló minőség</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Tartós anyag</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Kényelmes viselés</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Ideális megoldás</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-star text-primary me-2"></i>Üzleti megbeszélésekhez</li>
+                                <li class="mb-2"><i class="fas fa-star text-primary me-2"></i>Esküvőhöz</li>
+                                <li class="mb-2"><i class="fas fa-star text-primary me-2"></i>Formális eseményekhez</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details Tab -->
+            <div class="tab-pane fade" id="details-content" role="tabpanel">
+                <div class="bg-white rounded p-5">
+                    <h4 class="mb-4">Termék adatai</h4>
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Termék név</td>
+                                    <td>{{ product.name }}</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Modell</td>
+                                    <td>{{ product.model or 'N/A' }}</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Kategória</td>
+                                    <td>{{ product.category }}</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Ár</td>
+                                    <td>{{ product.price|int }} Ft</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Készlet</td>
+                                    <td>{{ product.stock }} db</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Kedvezmény</td>
+                                    <td>
+                                        {% if product.discount > 0 %}
+                                            {{ product.discount|int }}%
+                                        {% else %}
+                                            Nincsen
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <td class="fw-bold">Feltöltve</td>
+                                    <td>{{ product.created_at.strftime('%Y.%m.%d') }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Szállítás</td>
+                                    <td>2-3 munkanap</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-pane fade" id="reviews-content" role="tabpanel">
+                <div class="bg-white rounded p-5">
+                    <h4 class="mb-4">Vásárlói értékelések</h4>
+
+                    <!-- Rating Summary -->
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-3">
+                            <div class="text-center p-4 bg-light rounded">
+                                <h2 class="text-primary mb-2">4.5</h2>
+                                <div class="mb-2">
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star-half-alt text-primary"></i>
+                                </div>
+                                <p class="text-muted mb-0">12 értékelés alapján</p>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <small class="text-muted">5 csillag</small>
+                                </div>
+                                <div class="col">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-primary" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <small class="text-muted">8</small>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center mt-2">
+                                <div class="col-auto">
+                                    <small class="text-muted">4 csillag</small>
+                                </div>
+                                <div class="col">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-primary" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <small class="text-muted">3</small>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center mt-2">
+                                <div class="col-auto">
+                                    <small class="text-muted">3 csillag</small>
+                                </div>
+                                <div class="col">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-primary" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <small class="text-muted">1</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h6 class="mb-3">Legújabb értékelések</h6>
+
+                        <!-- Review Item 1 -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-1">Nagy János</h6>
+                                    <div>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                    </div>
+                                </div>
+                                <small class="text-muted">2 napja</small>
+                            </div>
+                            <p class="text-muted mb-0">Kiváló minőség! Pontosan úgy néz ki, mint a képen. Nagyon elégedett vagyok a vásárlással. Ajánlom!</p>
+                        </div>
+
+                        <!-- Review Item 2 -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-1">Szabó Péter</h6>
+                                    <div>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star fa-sm text-muted"></i>
+                                    </div>
+                                </div>
+                                <small class="text-muted">1 hete</small>
+                            </div>
+                            <p class="text-muted mb-0">Nagyon szép és kényelmes. Az ár-érték arány jó. Csak azt sajnálom, hogy a szállítás kicsit lassú volt.</p>
+                        </div>
+
+                        <!-- Review Item 3 -->
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-1">Kovács Márta</h6>
+                                    <div>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                        <i class="fas fa-star text-primary fa-sm"></i>
+                                    </div>
+                                </div>
+                                <small class="text-muted">3 hete</small>
+                            </div>
+                            <p class="text-muted mb-0">Tökéletes! Pontosan azt vásároltam amire szükségem volt. A csomagolás is gondos volt.</p>
+                        </div>
+                    </div>
+
+                    <!-- Add Review Button -->
+                    {% if current_user.is_authenticated %}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                                data-bs-target="#reviewModal">
+                            <i class="fas fa-pen me-2"></i>Vélemény írása
+                        </button>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary">
+                            <i class="fas fa-pen me-2"></i>Vélemény írásához jelentkezz be
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Details Tabs End -->
+
+<!-- Related Products Start -->
+<div class="container-fluid product py-5">
+    <div class="container">
+        <h2 class="mb-4">Hasonló termékek</h2>
+        <div class="row g-4">
+            <!-- Related Product 1 -->
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="product-item rounded wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="product-item-inner border rounded">
+                        <div class="product-item-inner-item">
+                            <img src="{{ url_for('static', filename='img/product-3.png') }}" 
+                                 class="img-fluid w-100 rounded-top" alt="">
+                            <div class="product-new">Új</div>
+                            <div class="product-details">
+                                <a href="{{ url_for('product_detail', product_id=1) }}">
+                                    <i class="fa fa-eye fa-1x"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center rounded-bottom p-4">
+                            <a href="#" class="d-block mb-2 text-primary">{{ product.category }}</a>
+                            <a href="#" class="d-block h5 mb-2">Klasszikus fekete öltöny</a>
+                            <span class="text-primary fs-5">89,990 Ft</span>
+                        </div>
+                    </div>
+                    <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                        <button class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
+                            <i class="fas fa-shopping-cart me-2"></i>Kosárba
+                        </button>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Product 2 -->
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="product-item rounded wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="product-item-inner border rounded">
+                        <div class="product-item-inner-item">
+                            <img src="{{ url_for('static', filename='img/product-3.png') }}" 
+                                 class="img-fluid w-100 rounded-top" alt="">
+                            <div class="product-sale">Akció</div>
+                            <div class="product-details">
+                                <a href="{{ url_for('product_detail', product_id=2) }}">
+                                    <i class="fa fa-eye fa-1x"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center rounded-bottom p-4">
+                            <a href="#" class="d-block mb-2 text-primary">{{ product.category }}</a>
+                            <a href="#" class="d-block h5 mb-2">Szürke öltöny szett</a>
+                            <span class="text-primary fs-5">109,990 Ft</span>
+                        </div>
+                    </div>
+                    <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                        <button class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
+                            <i class="fas fa-shopping-cart me-2"></i>Kosárba
+                        </button>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Product 3 -->
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="product-item rounded wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="product-item-inner border rounded">
+                        <div class="product-item-inner-item">
+                            <img src="{{ url_for('static', filename='img/product-3.png') }}" 
+                                 class="img-fluid w-100 rounded-top" alt="">
+                            <div class="product-new">Új</div>
+                            <div class="product-details">
+                                <a href="{{ url_for('product_detail', product_id=3) }}">
+                                    <i class="fa fa-eye fa-1x"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center rounded-bottom p-4">
+                            <a href="#" class="d-block mb-2 text-primary">{{ product.category }}</a>
+                            <a href="#" class="d-block h5 mb-2">Elegáns nyakkendő</a>
+                            <span class="text-primary fs-5">12,990 Ft</span>
+                        </div>
+                    </div>
+                    <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                        <button class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
+                            <i class="fas fa-shopping-cart me-2"></i>Kosárba
+                        </button>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star-half-alt text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Product 4 -->
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="product-item rounded wow fadeInUp" data-wow-delay="0.4s">
+                    <div class="product-item-inner border rounded">
+                        <div class="product-item-inner-item">
+                            <img src="{{ url_for('static', filename='img/product-3.png') }}" 
+                                 class="img-fluid w-100 rounded-top" alt="">
+                            <div class="product-details">
+                                <a href="{{ url_for('product_detail', product_id=4) }}">
+                                    <i class="fa fa-eye fa-1x"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center rounded-bottom p-4">
+                            <a href="#" class="d-block mb-2 text-primary">{{ product.category }}</a>
+                            <a href="#" class="d-block h5 mb-2">Barna öltöny cipő</a>
+                            <span class="text-primary fs-5">34,990 Ft</span>
+                        </div>
+                    </div>
+                    <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                        <button class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
+                            <i class="fas fa-shopping-cart me-2"></i>Kosárba
+                        </button>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Related Products End -->
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vélemény írása</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <div class="mb-3">
+                        <label class="form-label">Értékelés</label>
+                        <div class="star-rating mb-2">
+                            <i class="fas fa-star cursor-pointer" data-value="1"></i>
+                            <i class="fas fa-star cursor-pointer" data-value="2"></i>
+                            <i class="fas fa-star cursor-pointer" data-value="3"></i>
+                            <i class="fas fa-star cursor-pointer" data-value="4"></i>
+                            <i class="fas fa-star cursor-pointer" data-value="5"></i>
+                        </div>
+                        <input type="hidden" id="rating" value="5">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vélemény szövege</label>
+                        <textarea class="form-control" rows="4" placeholder="Írd le a véleményed..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Név</label>
+                        <input type="text" class="form-control" placeholder="Neved">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                <button type="button" class="btn btn-primary">Vélemény beküldése</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Quantity Control
+document.getElementById('btnPlus').addEventListener('click', function() {
+    let qty = parseInt(document.getElementById('quantity').value);
+    qty = isNaN(qty) ? 1 : qty + 1;
+    document.getElementById('quantity').value = qty;
+});
+
+document.getElementById('btnMinus').addEventListener('click', function() {
+    let qty = parseInt(document.getElementById('quantity').value);
+    qty = isNaN(qty) || qty <= 1 ? 1 : qty - 1;
+    document.getElementById('quantity').value = qty;
+});
+
+// Add to Cart
+document.getElementById('addToCartBtn').addEventListener('click', function() {
+    const productId = this.dataset.productId;
+    const quantity = parseInt(document.getElementById('quantity').value);
+    
+    fetch(`/add-to-cart/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Termék hozzáadva a kosárhoz!');
+            document.getElementById('quantity').value = 1;
+        } else {
+            alert('Hiba: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Hiba:', error));
+});
+
+// Star Rating
+document.querySelectorAll('.star-rating i').forEach(star => {
+    star.addEventListener('click', function() {
+        const value = this.dataset.value;
+        document.getElementById('rating').value = value;
+        
+        document.querySelectorAll('.star-rating i').forEach(s => {
+            s.classList.remove('text-primary');
+            s.classList.add('text-muted');
+        });
+        
+        for (let i = 0; i < value; i++) {
+            document.querySelectorAll('.star-rating i')[i].classList.remove('text-muted');
+            document.querySelectorAll('.star-rating i')[i].classList.add('text-primary');
+        }
+    });
+});
+
+// Initialize stars
+document.querySelectorAll('.star-rating i').forEach((star, index) => {
+    if (index < 5) {
+        star.classList.add('text-primary');
+    }
+});
+</script>
+
+{% endblock %}

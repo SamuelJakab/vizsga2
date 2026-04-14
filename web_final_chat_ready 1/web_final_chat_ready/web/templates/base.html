@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Ship&Shop - Öltönytronikai Weboldal{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- WHITE & GREEN THEME - Felül írja a Bootstrapot -->
+    <style>
+        :root {
+            --bs-primary: #10b981;
+            --bs-secondary: #059669;
+            --bs-success: #10b981;
+            --bs-danger: #ff6b6b;
+            --bs-warning: #ffa500;
+            --bs-info: #000000;
+            --bs-light: #f5f5f5;
+            --bs-dark: #333333;
+            --bs-white: #ffffff;
+            --bs-body-bg: #ffffff;
+            --bs-body-color: #333333;
+            --bs-border-color: #10b981;
+            --bs-form-valid-color: #10b981;
+            --bs-form-valid-border-color: #10b981;
+        }
+
+        * {
+            background-color: inherit;
+        }
+
+        html, body {
+            background: #ffffff !important;
+            color: #333333 !important;
+        }
+
+        /* Általános háttérek */
+        .bg-light {
+            background: #ffffff !important;
+        }
+
+        .bg-white {
+            background: #ffffff !important;
+        }
+
+        .bg-dark {
+            background: #ffffff !important;
+        }
+
+        .bg-primary {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .bg-secondary {
+            background: #059669 !important;
+            color: #ffffff !important;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: #ffffff !important;
+            border-bottom: 2px solid #10b981 !important;
+            padding: 2px 10px 2px 20px !important;
+        }
+
+        .topbar a {
+            color: #10b981 !important;
+        }
+
+        .topbar a:hover,
+        .topbar a i:hover {
+            color: #059669 !important;
+        }
+
+        .topbar .text-muted {
+            color: #10b981 !important;
+        }
+
+        /* Navbar */
+        .nav-bar {
+            background: #ffffff !important;
+        }
+
+        .nav-bar .navbar {
+            background: #10b981 !important;
+        }
+
+        .nav-bar .navbar-nav .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+
+        .nav-bar .navbar-nav .nav-link:hover,
+        .nav-bar .navbar-nav .nav-link.active {
+            color: #ffffff !important;
+            background: #059669 !important;
+        }
+
+        .navbar .dropdown-toggle {
+            color: #ffffff !important;
+        }
+
+        .dropdown-menu {
+            background: #ffffff !important;
+            border: 1px solid #10b981 !important;
+        }
+
+        .dropdown-item {
+            color: #10b981 !important;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background: #f5f5f5 !important;
+            color: #059669 !important;
+        }
+
+        .navbar-light .navbar-toggler {
+            border-color: #10b981 !important;
+        }
+
+        .navbar-light .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2310b981' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+
+        /* Categories */
+        .categories-bars-item {
+            border-bottom: 1px solid #e5e5e5 !important;
+        }
+
+        .categories-bars-item a,
+        .categories-bars-item span {
+            color: #333333 !important;
+        }
+
+        .categories-bars-item:hover {
+            background: #f5f5f5 !important;
+        }
+
+        .categories-bars-item:hover a,
+        .categories-bars-item:hover span {
+            color: #10b981 !important;
+        }
+
+        #allCat {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+        }
+
+        /* "Összes kategória" szöveg */
+        .navbar-toggler h4 {
+            color: #ffffff !important;
+        }
+
+        /* Keresőbar - Border nélkül */
+        .d-flex.border.rounded-pill {
+            border: none !important;
+            background: #ffffff !important;
+        }
+
+        /* Gombok */
+        .btn {
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            border-color: #10b981 !important;
+        }
+
+        .btn-primary:hover {
+            background: #059669 !important;
+            color: #ffffff !important;
+            border-color: #059669 !important;
+        }
+
+        .btn-secondary {
+            background: #059669 !important;
+            color: #ffffff !important;
+            border-color: #059669 !important;
+        }
+
+        .btn-secondary:hover {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            border-color: #10b981 !important;
+        }
+
+        .btn-sm-square,
+        .btn-md-square,
+        .btn-lg-square {
+            border: 1px solid #10b981 !important;
+            color: #10b981 !important;
+            background: transparent !important;
+        }
+
+        .btn-sm-square:hover,
+        .btn-md-square:hover,
+        .btn-lg-square:hover {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        /* Carousel */
+        .carousel .carousel-header-banner {
+            background: rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .header-carousel.owl-carousel .owl-nav .owl-prev,
+        .header-carousel.owl-carousel .owl-nav .owl-next {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .header-carousel.owl-carousel .owl-nav .owl-prev:hover,
+        .header-carousel.owl-carousel .owl-nav .owl-next:hover {
+            background: #059669 !important;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/carousel-1.jpg) !important;
+            background-attachment: fixed !important;
+        }
+
+        /* Termékek */
+        .product-item-inner {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+        }
+
+        .product-item-inner .product-new {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .product-item-inner .product-sale {
+            background: #059669 !important;
+            color: #ffffff !important;
+        }
+
+        .product-item-add {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+            border-top: 0 !important;
+        }
+
+        .product-details {
+            background: rgba(16, 185, 129, 0.1) !important;
+        }
+
+        .product-details a i {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .product-details a i:hover {
+            background: #059669 !important;
+        }
+
+        /* Termék linkek */
+        .product-item-inner a {
+            color: #10b981 !important;
+        }
+
+        .product-item-inner a:hover {
+            color: #059669 !important;
+        }
+
+        /* Formok */
+        .form-control {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+            color: #333333 !important;
+        }
+
+        .form-control:focus {
+            background: #ffffff !important;
+            border-color: #10b981 !important;
+            color: #333333 !important;
+            box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25) !important;
+        }
+
+        .form-select {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+            color: #333333 !important;
+        }
+
+        .form-select:focus {
+            border-color: #10b981 !important;
+            box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25) !important;
+        }
+
+        .form-check-input {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+        }
+
+        .form-check-input:checked {
+            background: #10b981 !important;
+            border-color: #10b981 !important;
+        }
+
+        .form-check-label {
+            color: #333333 !important;
+        }
+
+        /* Táblázatok */
+        .table {
+            color: #333333 !important;
+            border-color: #e5e5e5 !important;
+            background: #ffffff !important;
+        }
+
+        .table thead {
+            border-color: #e5e5e5 !important;
+            background: #ffffff !important;
+        }
+
+        .table tbody tr {
+            border-color: #e5e5e5 !important;
+            background: #ffffff !important;
+        }
+
+        .table-responsive {
+            border: 1px solid #e5e5e5 !important;
+            background: #ffffff !important;
+        }
+
+        /* Alert-ek */
+        .alert-info {
+            background: #000000 !important;
+            border: 1px solid #000000 !important;
+            color: #ffffff !important;
+        }
+
+        .alert-success {
+            background: #e8f5e9 !important;
+            border: 1px solid #10b981 !important;
+            color: #059669 !important;
+        }
+
+        .alert-danger {
+            background: #ffebee !important;
+            border: 1px solid #ff6b6b !important;
+            color: #d32f2f !important;
+        }
+
+        .alert-warning {
+            background: #fff3e0 !important;
+            border: 1px solid #ffa500 !important;
+            color: #f57c00 !important;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333333 !important;
+            border-top: 2px solid #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .footer a {
+            color: #10b981 !important;
+        }
+
+        .footer a:hover {
+            color: #059669 !important;
+        }
+
+        .footer-item a {
+            color: #10b981 !important;
+        }
+
+        .footer-item p {
+            color: #e0e0e0 !important;
+        }
+
+        /* Copyright */
+        .copyright {
+            background: #1a1a1a !important;
+            border-top: 1px solid #10b981 !important;
+        }
+
+        .copyright a {
+            color: #10b981 !important;
+        }
+
+        /* Spinner */
+        #spinner {
+            background: #ffffff !important;
+        }
+
+        .spinner-border {
+            border-color: #10b981 !important;
+            border-right-color: transparent !important;
+        }
+
+        /* Pagination */
+        .pagination a {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+            color: #10b981 !important;
+        }
+
+        .pagination a.active {
+            background: #10b981 !important;
+            border-color: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .pagination a:hover:not(.active) {
+            background: #f5f5f5 !important;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: transparent !important;
+        }
+
+        .breadcrumb-item a {
+            color: #10b981 !important;
+        }
+
+        .breadcrumb-item.active {
+            color: #ffffff !important;
+        }
+
+        /* Navbar brand */
+        .navbar-brand h1 {
+            color: #10b981 !important;
+        }
+
+        .navbar-brand .text-secondary {
+            color: #059669 !important;
+        }
+
+        /* Tab-ok */
+        .nav-tabs {
+            border-bottom: 1px solid #e5e5e5 !important;
+        }
+
+        .nav-tabs .nav-link {
+            color: #666666 !important;
+            border: 1px solid transparent !important;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border-color: #e5e5e5 #e5e5e5 transparent !important;
+            color: #10b981 !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: #ffffff !important;
+            border-color: #e5e5e5 #e5e5e5 transparent !important;
+            color: #10b981 !important;
+            border-bottom: 2px solid #10b981 !important;
+        }
+
+        /* Pills */
+        .nav-pills .nav-link.active {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .nav-pills .nav-link {
+            color: #10b981 !important;
+        }
+
+        .nav-pills .nav-link:hover {
+            color: #059669 !important;
+        }
+
+        /* Card */
+        .card {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+            color: #333333 !important;
+        }
+
+        .card-title {
+            color: #10b981 !important;
+        }
+
+        /* Border stílusok */
+        .border {
+            border-color: #e5e5e5 !important;
+        }
+
+        .border-top {
+            border-top-color: #e5e5e5 !important;
+        }
+
+        .border-bottom {
+            border-bottom-color: #e5e5e5 !important;
+        }
+
+        .border-start {
+            border-left-color: #e5e5e5 !important;
+        }
+
+        .border-end {
+            border-right-color: #e5e5e5 !important;
+        }
+
+        /* Szöveg stílusok */
+        a {
+            color: #000000 !important;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #059669 !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #000000 !important;
+        }
+
+        .text-muted {
+            color: #999999 !important;
+        }
+
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .text-dark {
+            color: #333333 !important;
+        }
+
+        .text-primary {
+            color: #10b981 !important;
+        }
+
+        .text-secondary {
+            color: #059669 !important;
+        }
+
+        /* Owl Carousel */
+        .owl-carousel .owl-nav button {
+            color: #10b981 !important;
+        }
+
+        .owl-carousel .owl-dots {
+            display: flex !important;
+        }
+
+        .owl-carousel .owl-dot {
+            background: #10b981 !important;
+        }
+
+        /* Back to top gomb */
+        .back-to-top {
+            background: #10b981 !important;
+            color: #ffffff !important;
+        }
+
+        .back-to-top:hover {
+            background: #059669 !important;
+        }
+
+        /* Input group */
+        .input-group-text {
+            background: #ffffff !important;
+            border: 1px solid #e5e5e5 !important;
+            color: #10b981 !important;
+        }
+
+        /* Placeholder */
+        .form-control::placeholder {
+            color: #999999 !important;
+        }
+
+        /* Szolgáltatások szekció */
+        .row.g-0 {
+            background: #ffffff !important;
+        }
+
+        /* Világos kék helyett fekete */
+        .text-info,
+        .bg-info {
+            color: #000000 !important;
+            background: #000000 !important;
+        }
+    </style>
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Betöltés...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start -->
+    <div class="container-fluid px-5 d-none border-bottom d-lg-block">
+        <div class="row gx-0 align-items-center">
+            <div class="col-lg-4 text-center text-lg-start mb-lg-0">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <a href="{{ url_for('contact') }}" class="text-muted me-2">Segítség</a><small>/</small>
+                    <a href="{{ url_for('contact') }}" class="text-muted mx-2">Támogatás</a><small>/</small>
+                    <a href="{{ url_for('contact') }}" class="text-muted ms-2">Kapcsolat</a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center d-flex align-items-center justify-content-center">
+                <small class="text-dark">Hívjon bennünket:</small>
+                <a href="tel:+36123456789" class="text-muted">(+36) 1234 567890</a>
+            </div>
+
+            <div class="col-lg-4 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    {% if current_user.is_authenticated %}
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle text-muted ms-2" data-bs-toggle="dropdown"><small><i
+                                        class="fa fa-home me-2"></i>Fiókom</small></a>
+                            <div class="dropdown-menu rounded">
+                                <a href="{{ url_for('cart') }}" class="dropdown-item">Kosár</a>
+                                <a href="{{ url_for('logout') }}" class="dropdown-item">Kijelentkezés</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle text-muted ms-2" data-bs-toggle="dropdown"><small><i
+                                        class="fa fa-home me-2"></i>Fiókom</small></a>
+                            <div class="dropdown-menu rounded">
+                                <a href="{{ url_for('login') }}" class="dropdown-item">Bejelentkezés</a>
+                                <a href="{{ url_for('register') }}" class="dropdown-item">Regisztráció</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid px-5 py-4 d-none d-lg-block">
+        <div class="row gx-0 align-items-center text-center">
+            <div class="col-md-4 col-lg-3 text-center text-lg-start">
+                <div class="d-inline-flex align-items-center">
+                    <a href="{{ url_for('home') }}" class="navbar-brand p-0">
+                        <h1 class="display-5 text-primary m-0"><i
+                                class="fas fa-shopping-bag text-secondary me-2"></i>Ship&Shop</h1>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-6 text-center">
+                <div class="position-relative ps-4">
+                    <div class="d-flex rounded-pill">
+                        <input class="form-control border-0 rounded-pill w-100 py-3" type="text"
+                            placeholder="Mit keres?" id="search-input">
+                        <select class="form-select text-dark border-0 border-start rounded-0 p-3" style="width: 200px;" id="search-category">
+                            <option value="">Minden kategória</option>
+                            <option value="Öltönyök">Öltönyök</option>
+                            <option value="Öltöny Szették">Öltöny Szették</option>
+                            <option value="Nyakkendők">Nyakkendők</option>
+                            <option value="Öltöny Cipők">Öltöny Cipők</option>
+                        </select>
+                        <button type="button" class="btn btn-primary rounded-pill py-3 px-5" style="border: 0;" onclick="handleSearch()"><i
+                                class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center">
+                    <a href="#" class="text-muted d-flex align-items-center justify-content-center me-3"><span
+                            class="rounded-circle btn-md-square border"><i class="fas fa-random"></i></span></a>
+                    <a href="#" class="text-muted d-flex align-items-center justify-content-center me-3"><span
+                            class="rounded-circle btn-md-square border"><i class="fas fa-heart"></i></span></a>
+                    <a href="{{ url_for('cart') if current_user.is_authenticated else url_for('login') }}" class="text-muted d-flex align-items-center justify-content-center"><span
+                            class="rounded-circle btn-md-square border"><i class="fas fa-shopping-cart"></i></span>
+                        <span class="text-dark ms-2">0 Ft</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Navbar & Hero Start -->
+    <div class="container-fluid nav-bar p-0">
+        <div class="row gx-0 bg-primary px-5 align-items-center">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="navbar navbar-light position-relative" style="width: 250px;">
+                    <button class="navbar-toggler border-0 fs-4 w-100 px-0 text-start" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#allCat">
+                        <h4 class="m-0"><i class="fa fa-bars me-2"></i>Összes kategória</h4>
+                    </button>
+                    <div class="collapse navbar-collapse rounded-bottom" id="allCat">
+                        <div class="navbar-nav ms-auto py-0">
+                            <ul class="list-unstyled categories-bars">
+                                <li>
+                                    <div class="categories-bars-item">
+                                        <a href="{{ url_for('shop', category='Újdonságok') }}">Újdonságok</a>
+                                        <span>(3)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="categories-bars-item">
+                                        <a href="{{ url_for('shop', category='Legnépszerűbb') }}">Legnépszerűbb</a>
+                                        <span>(5)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="categories-bars-item">
+                                        <a href="{{ url_for('shop', category='Akciók') }}">Akciók</a>
+                                        <span>(2)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="categories-bars-item">
+                                        <a href="{{ url_for('shop', category='Ajánlott termékek') }}">Ajánlott termékek</a>
+                                        <span>(8)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="categories-bars-item">
+                                        <a href="{{ url_for('shop') }}">Minden termék</a>
+                                        <span>(5)</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-12 col-lg-9">
+                <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+                    <a href="{{ url_for('home') }}" class="navbar-brand d-block d-lg-none">
+                        <h1 class="display-5 text-secondary m-0"><i
+                                class="fas fa-shopping-bag text-white me-2"></i>GecImre</h1>
+                    </a>
+                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars fa-1x"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <div class="navbar-nav ms-auto py-0">
+                            <a href="{{ url_for('home') }}" class="nav-item nav-link">Kezdőoldal</a>
+                            <a href="{{ url_for('shop') }}" class="nav-item nav-link">Bolt</a>
+                            <a href="{{ url_for('contact') }}" class="nav-item nav-link me-2">Kapcsolat</a>
+                            {% if current_user.is_authenticated %}
+                                <div class="nav-item dropdown d-block d-lg-none mb-3">
+                                    <a href="#" class="nav-link" data-bs-toggle="dropdown"><span class="dropdown-toggle">Fiókom</span></a>
+                                    <div class="dropdown-menu m-0">
+                                        <a href="{{ url_for('cart') }}" class="dropdown-item">Kosár</a>
+                                        <a href="{{ url_for('logout') }}" class="dropdown-item">Kijelentkezés</a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="nav-item dropdown d-block d-lg-none mb-3">
+                                    <a href="#" class="nav-link" data-bs-toggle="dropdown"><span class="dropdown-toggle">Fiók</span></a>
+                                    <div class="dropdown-menu m-0">
+                                        <a href="{{ url_for('login') }}" class="dropdown-item">Bejelentkezés</a>
+                                        <a href="{{ url_for('register') }}" class="dropdown-item">Regisztráció</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <a href="tel:+36123456789" class="btn btn-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"><i
+                                class="fa fa-mobile-alt me-2"></i> +36 1234 567890</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar & Hero End -->
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+        <div class="container py-5">
+            <div class="row g-4 rounded mb-5" style="background: rgba(255, 255, 255, .03);">
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                            style="width: 70px; height: 70px;">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">Cím</h4>
+                            <p class="mb-2">Budapest, Magyarország 1000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                            style="width: 70px; height: 70px;">
+                            <i class="fas fa-envelope fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">E-mail</h4>
+                            <p class="mb-2">info@shipshop.hu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                            style="width: 70px; height: 70px;">
+                            <i class="fa fa-phone-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">Telefon</h4>
+                            <p class="mb-2">(+36) 1234 567890</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                            style="width: 70px; height: 70px;">
+                            <i class="fab fa-firefox-browser fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">Weboldal</h4>
+                            <p class="mb-2">www.shipshop.hu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <div class="footer-item">
+                            <h4 class="text-primary mb-4">Hírlevelezés</h4>
+                            <p class="text-white mb-3">Iratkozzon fel hírlevelünkre és kapjon exkluzív ajánlatokat.</p>
+                            <div class="position-relative mx-auto rounded-pill">
+                                <input class="form-control rounded-pill w-100 py-3 ps-4 pe-5" type="email"
+                                    placeholder="Adja meg e-mail címét">
+                                <button type="button"
+                                    class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2">Feliratkozás</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="text-primary mb-4">Ügyfélszolgálat</h4>
+                        <a href="{{ url_for('contact') }}">Kapcsolat</a>
+                        <a href="#">Visszaküldés</a>
+                        <a href="#">Megrendelési előzmények</a>
+                        <a href="#">Térkép</a>
+                        <a href="#">Vélemények</a>
+                        <a href="#">Fiókom</a>
+                        <a href="#">Leiratkozás</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="text-primary mb-4">Információ</h4>
+                        <a href="#">Rólunk</a>
+                        <a href="#">Szállítási információ</a>
+                        <a href="#">Adatvédelmi szabályzat</a>
+                        <a href="#">Felhasználási feltételek</a>
+                        <a href="#">Garancia</a>
+                        <a href="#">Gyakran feltett kérdések</a>
+                        <a href="#">Szállító bejelentkezés</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="text-primary mb-4">Kategóriák</h4>
+                        <a href="{{ url_for('shop', category='Öltönyök') }}">Öltönyök</a>
+                        <a href="{{ url_for('shop', category='Öltöny Szített') }}">Öltöny Szették</a>
+                        <a href="{{ url_for('shop', category='Nyakkendők') }}">Nyakkendők</a>
+                        <a href="{{ url_for('shop', category='Öltöny Cipők') }}">Öltöny Cipők</a>
+                        <a href="{{ url_for('shop') }}">Minden termék</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Copyright Start -->
+    <div class="container-fluid copyright py-4">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-md-0">
+                    <span class="text-white"><a href="{{ url_for('home') }}" class="border-bottom text-white"><i
+                                class="fas fa-copyright text-light me-2"></i>Öltöny Weboldal</a>, Minden jog fenntartva.</span>
+                </div>
+                <div class="col-md-6 text-center text-md-end text-white">
+                    Tervezte: <a class="border-bottom text-white" href="#">HTML Codex</a>.
+                    Terjesztette: <a class="border-bottom text-white" href="#">ThemeWagon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+
+    <script>
+        function handleSearch() {
+            const searchInput = document.getElementById('search-input').value;
+            const category = document.getElementById('search-category').value;
+            
+            if (!searchInput) {
+                alert('Kérjük írjon be egy keresési kifejezést');
+                return;
+            }
+            
+            if (category) {
+                window.location.href = `{{ url_for('shop') }}?category=${category}`;
+            } else {
+                window.location.href = `{{ url_for('shop') }}`;
+            }
+        }
+
+        // Enter billentyű kereséshez
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

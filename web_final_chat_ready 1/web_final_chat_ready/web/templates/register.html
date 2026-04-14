@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Regisztráció - Elektro{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h3 class="card-title text-center mb-4">Regisztráció</h3>
+                    
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Felhasználónév</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail cím</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="passwd" class="form-label">Jelszó</label>
+                            <input type="password" class="form-control" id="passwd" name="passwd" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="passwd_confirm" class="form-label">Jelszó megerősítése</label>
+                            <input type="password" class="form-control" id="passwd_confirm" name="passwd_confirm" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Regisztráció</button>
+                    </form>
+
+                    <p class="text-center">
+                        Van már fiókja? <a href="{{ url_for('login') }}">Bejelentkezés</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

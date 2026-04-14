@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Bolt - Elektro{% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Bolt</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Kezdőoldal</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('shop') }}">Bolt</a></li>
+        {% if request.args.get('category') %}
+            <li class="breadcrumb-item active text-white">{{ request.args.get('category') }}</li>
+        {% endif %}
+    </ol>
+</div>
+
+<div class="container-fluid shop py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="product-categories mb-4">
+                    <h4>Kategóriák</h4>
+                    <ul class="list-unstyled">
+                        <li>
+                            <div class="categories-item">
+                                <a href="{{ url_for('shop', category='Öltönyök') }}" class="text-dark"><i class="fas fa-apple-alt text-secondary me-2"></i>
+                                    Öltönyök</a>
+                                <span>(3)</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categories-item">
+                                <a href="{{ url_for('shop', category='Öltöny Szettei') }}" class="text-dark"><i class="fas fa-apple-alt text-secondary me-2"></i>
+                                    Öltöny Szettek</a>
+                                <span>(5)</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categories-item">
+                                <a href="{{ url_for('shop', category='Nyakkendők') }}" class="text-dark"><i
+                                        class="fas fa-apple-alt text-secondary me-2"></i>Nyakkendők</a>
+                                <span>(2)</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categories-item">
+                                <a href="{{ url_for('shop', category='Öltöny Cipők') }}" class="text-dark"><i
+                                        class="fas fa-apple-alt text-secondary me-2"></i>Öltöny Cipők</a>
+                                <span>(8)</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categories-item">
+                                <a href="{{ url_for('shop') }}" class="text-dark"><i
+                                        class="fas fa-apple-alt text-secondary me-2"></i>Minden termék</a>
+                                <span>Összes</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
+                {% if request.args.get('category') %}
+                    <div class="alert alert-info mb-4" role="alert">
+                        <strong>Kategória:</strong> {{ request.args.get('category') }}
+                        <a href="{{ url_for('shop') }}" class="btn btn-sm btn-secondary ms-2">Szűrés törlése</a>
+                    </div>
+                {% endif %}
+
+                <div class="row g-4">
+                    {% if products %}
+                        {% for product in products %}
+                        <div class="col-lg-4">
+                            <div class="product-item rounded wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="product-item-inner border rounded">
+                                    <div class="product-item-inner-item">
+                                        <img src="{{ url_for('static', filename=product.image) }}" class="img-fluid w-100 rounded-top" alt="">
+                                        <div class="product-new">Új</div>
+                                        <div class="product-details">
+                                            <a href="{{ url_for('product_detail', product_id=product.id) }}"><i class="fa fa-eye fa-1x"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="text-center rounded-bottom p-4">
+                                        <a href="{{ url_for('shop', category=product.category) }}" class="d-block mb-2 text-primary">{{ product.category }}</a>
+                                        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="d-block h4">{{ product.name }} <br> {{ product.model }}</a>
+                                        <span class="text-primary fs-5">{{ product.price }} Ft</span>
+                                    </div>
+                                </div>
+                                <div class="product-item-add border border-top-0 rounded-bottom  text-center p-4 pt-0">
+                                    <button data-product-id="{{ product.id }}" data-add-to-cart
+                                        class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4"><i
+                                            class="fas fa-shopping-cart me-2"></i>Kosárba</button>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex">
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <div class="d-flex">
+                                            <a href="#"
+                                                class="text-primary d-flex align-items-center justify-content-center me-3"><span
+                                                    class="rounded-circle btn-sm-square border"><i
+                                                        class="fas fa-random"></i></span></a>
+                                            <a href="#"
+                                                class="text-primary d-flex align-items-center justify-content-center"><span
+                                                    class="rounded-circle btn-sm-square border"><i
+                                                        class="fas fa-heart"></i></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12">
+                            <div class="alert alert-warning text-center" role="alert">
+                                <h4>Nincs termék ebben a kategóriában</h4>
+                                <p><a href="{{ url_for('shop') }}">Nézzen meg más kategóriákat</a></p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Shop Page End -->
+
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Elektro - Elektronikai Weboldal{% endblock %}
+
+{% block content %}
+
+<!-- Carousel Start -->
+<div class="container-fluid carousel bg-light px-0">
+    <div class="row g-0 justify-content-end">
+        <div class="col-12 col-lg-7 col-xl-9">
+            <div class="header-carousel owl-carousel bg-light py-5">
+                <div class="row g-0 header-carousel-item align-items-center">
+                    <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
+                        <img src="{{ url_for('static', filename='img/carousel-1.png') }}" class="img-fluid w-100" alt="Kép">
+                    </div>
+                    <div class="col-xl-6 carousel-content p-4">
+                        
+                        <h1 class="display-3 text-capitalize mb-4 wow fadeInRight" data-wow-delay="0.3s">Válogatott Férfi
+                            Öltönyök & Öltönyszettek</h1>
+                        
+                        <a class="btn btn-primary rounded-pill py-3 px-5 wow fadeInRight" data-wow-delay="0.7s"
+                            href="{{ url_for('shop') }}">Vásároljon most</a>
+                    </div>
+                </div>
+                <div class="row g-0 header-carousel-item align-items-center">
+                    <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
+                        <img src="{{ url_for('static', filename='img/carousel-2.png') }}" class="img-fluid w-100" alt="Kép">
+                    </div>
+                    <div class="col-xl-6 carousel-content p-4">
+                        
+                        <h1 class="display-3 text-capitalize mb-4 wow fadeInRight" data-wow-delay="0.3s">Válogatott Női
+                            Öltönyök & Öltönyszettek</h1>
+                        
+                        <a class="btn btn-primary rounded-pill py-3 px-5 wow fadeInRight" data-wow-delay="0.7s"
+                            href="{{ url_for('shop') }}">Vásároljon most</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Carousel End -->
+
+<!-- Services Start -->
+<div class="container-fluid px-0">
+    <div class="row g-0">
+        <div class="col-6 col-md-4 col-lg-2 border-start border-end wow fadeInUp" data-wow-delay="0.1s">
+            <div class="p-4">
+                <div class="d-inline-flex align-items-center">
+                    <i class="fa fa-sync-alt fa-2x text-primary"></i>
+                    <div class="ms-4">
+                        <h6 class="text-uppercase mb-2">Ingyenes Visszaküldés</h6>
+                        <p class="mb-0">14 nap pénzvisszafizetési garancia!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2 border-end wow fadeInUp" data-wow-delay="0.2s">
+            <div class="p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fab fa-telegram-plane fa-2x text-primary"></i>
+                    <div class="ms-4">
+                        <h6 class="text-uppercase mb-2">Ingyenes Szállítás</h6>
+                        <p class="mb-0">Ingyenes szállítás 69.990Ft-os rendeléshez</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2 border-end wow fadeInUp" data-wow-delay="0.3s">
+            <div class="p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-life-ring fa-2x text-primary"></i>
+                    <div class="ms-4">
+                        <h6 class="text-uppercase mb-2">24/7 Támogatás</h6>
+                        <p class="mb-0">Online támogatás 24 óra naponta</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2 border-end wow fadeInUp" data-wow-delay="0.4s">
+            <div class="p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-credit-card fa-2x text-primary"></i>
+                    <div class="ms-4">
+                        <h6 class="text-uppercase mb-2">Ajándékutalvány</h6>
+                        <p class="mb-0">Kapjon ajándékot minden 55.990 Ft-os rendeléshez</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2 border-end wow fadeInUp" data-wow-delay="0.5s">
+            <div class="p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-lock fa-2x text-primary"></i>
+                    <div class="ms-4">
+                        <h6 class="text-uppercase mb-2">Biztonságos Fizetés</h6>
+                        <p class="mb-0">Becsüljük az Ön biztonságát</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2 border-end wow fadeInUp" data-wow-delay="0.6s">
+            <div class="p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-blog fa-2x text-primary"></i>
+                    <div class="ms-4">
+                        <h6 class="text-uppercase mb-2">Online Szolgáltatás</h6>
+                        <p class="mb-0">15 nap alatt ingyenes termékcsere</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Services End -->
+
+<!-- Products Offer Start -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2s">
+                <a href="{{ url_for('shop') }}" class="d-flex align-items-center justify-content-between border bg-white rounded p-4">
+                    <div>
+                        <p class="text-muted mb-3">Keresse meg a legjobb öltönyt az Ön számára!</p>
+                        <h3 class="text-primary">Öltöny szettek</h3>
+                        <h1 class="display-3 text-secondary mb-0">40% <span
+                                class="text-primary fw-normal">Kedvezmény</span></h1>
+                    </div>
+                    <img src="{{ url_for('static', filename='img/product-1.png') }}" class="img-fluid" alt="">
+                </a>
+            </div>
+            <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
+                <a href="{{ url_for('shop') }}" class="d-flex align-items-center justify-content-between border bg-white rounded p-4">
+                    <div>
+                        <p class="text-muted mb-3">Keresse meg a legjobb öltönyt az Ön számára!</p>
+                        <h3 class="text-primary">Öltöny szettek</h3>
+                        <h1 class="display-3 text-secondary mb-0">20% <span
+                                class="text-primary fw-normal">Kedvezmény</span></h1>
+                    </div>
+                    <img src="{{ url_for('static', filename='img/product-2.png') }}" class="img-fluid" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Products Offer End -->
+
+<!-- Our Products Start -->
+<div class="container-fluid product py-5">
+    <div class="container py-5">
+        <div class="tab-class">
+            <div class="row g-4">
+                <div class="col-lg-4 text-start wow fadeInLeft" data-wow-delay="0.1s">
+                    <h1>Termékeink</h1>
+                </div>
+                <div class="col-lg-8 text-end wow fadeInRight" data-wow-delay="0.1s">
+                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                        <li class="nav-item mb-4">
+                            <a class="d-flex mx-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill"
+                                href="#tab-1">
+                                <span class="text-dark" style="width: 130px;">Összes Termék</span>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-4">
+                            <a class="d-flex py-2 mx-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                                <span class="text-dark" style="width: 130px;">Új Érkezések</span>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-4">
+                            <a class="d-flex mx-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
+                                <span class="text-dark" style="width: 130px;">Kiemelt</span>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-4">
+                            <a class="d-flex mx-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
+                                <span class="text-dark" style="width: 130px;">Legtöbbet Eladott</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        {% if products %}
+                            {% for product in products %}
+                            <div class="col-md-6 col-lg-4 col-xl-3">
+                                <div class="product-item rounded wow fadeInUp" data-wow-delay="0.1s">
+                                    <div class="product-item-inner border rounded">
+                                        <div class="product-item-inner-item">
+                                            <img src="{{ url_for('static', filename='img/product-3.png') }}" class="img-fluid w-100 rounded-top" alt="">
+                                            <div class="product-new">Új</div>
+                                            <div class="product-details">
+                                                <a href="{{ url_for('product_detail', product_id=product.id) }}"><i class="fa fa-eye fa-1x"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="text-center rounded-bottom p-4">
+                                            <a href="#" class="d-block mb-2">{{ product.category }}</a>
+                                            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="d-block h4">{{ product.name }} <br> {{ product.model }}</a>
+                                            <span class="text-primary fs-5">{{ product.price }} Ft</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-item-add border border-top-0 rounded-bottom  text-center p-4 pt-0">
+                                        <button data-product-id="{{ product.id }}" data-add-to-cart
+                                            class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4"><i
+                                                class="fas fa-shopping-cart me-2"></i>Kosárba</button>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex">
+                                                <i class="fas fa-star text-primary"></i>
+                                                <i class="fas fa-star text-primary"></i>
+                                                <i class="fas fa-star text-primary"></i>
+                                                <i class="fas fa-star text-primary"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <div class="d-flex">
+                                                <a href="#"
+                                                    class="text-primary d-flex align-items-center justify-content-center me-3"><span
+                                                        class="rounded-circle btn-sm-square border"><i
+                                                            class="fas fa-random"></i></span></a>
+                                                <a href="#"
+                                                    class="text-primary d-flex align-items-center justify-content-center me-0"><span
+                                                        class="rounded-circle btn-sm-square border"><i
+                                                            class="fas fa-heart"></i></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-center">Nincsenek termékek</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Products End -->
+
+{% endblock %}

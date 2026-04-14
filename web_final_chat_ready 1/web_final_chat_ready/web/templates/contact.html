@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Electro - Kapcsolatfelvétel{% endblock %}
+
+{% block content %}
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Lépjen velünk kapcsolatba</h1>
+        <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Kezdőlap</a></li>
+            
+            <li class="breadcrumb-item active text-white">Kapcsolat</li>
+        </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Contact Start -->
+    <div class="container-fluid contact py-5">
+        <div class="container py-5">
+            <div class="p-5 bg-light rounded">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 900px;">
+                            <h4 class="text-primary border-bottom border-primary border-2 d-inline-block pb-2">Lépjen
+                                velünk kapcsolatba</h4>
+                            <p class="mb-5 fs-5 text-dark">Mi itt vagyunk az Ön segítségére! Hogyan tudunk segíteni?
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <h5 class="text-primary wow fadeInUp" data-wow-delay="0.1s">Csatlakoztasson velünk</h5>
+                        <h1 class="display-5 mb-4 wow fadeInUp" data-wow-delay="0.3s">Küldje el az üzenetét</h1>
+                        <p class="mb-4 wow fadeInUp" data-wow-delay="0.5s">Írja meg nekünk az Ön kérdéseit és megjegyzéseit. Igyekszünk minél hamarabb válaszolni!</p>
+                        
+                        <!-- Success/Error Messages -->
+                        {% if request.method == 'POST' %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Siker!</strong> Az üzenet sikeresen elküldve. Hamarosan visszahívunk Önöket.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+                            </div>
+                        {% endif %}
+
+                        <form method="POST" action="{{ url_for('contact') }}">
+                            <div class="row g-4 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="col-lg-12 col-xl-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Név" required>
+                                        <label for="name">Az Ön neve</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-xl-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="E-mail cím" required>
+                                        <label for="email">Az Ön e-mail címe</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-xl-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefonszám">
+                                        <label for="phone">Az Ön telefonszáma</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-xl-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Tárgy" required>
+                                        <label for="subject">Tárgy</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Hagyjon üzenetet" id="message" name="message" style="height: 160px" required></textarea>
+                                        <label for="message">Üzenet</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Üzenet küldése</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.2s">
+                        
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row g-4 align-items-center justify-content-center">
+                            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="rounded p-4">
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                                        style="width: 70px; height: 70px;">
+                                        <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Cím</h4>
+                                        <p class="mb-2">Budapest, Magyarország 1000</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
+                                <div class="rounded p-4">
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                                        style="width: 70px; height: 70px;">
+                                        <i class="fas fa-envelope fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Írjon nekünk</h4>
+                                        <p class="mb-2">info@electro.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.5s">
+                                <div class="rounded p-4">
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                                        style="width: 70px; height: 70px;">
+                                        <i class="fa fa-phone-alt fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Telefonszám</h4>
+                                        <p class="mb-2">(+36) 1234 567890</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
+                                <div class="rounded p-4">
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                                        style="width: 70px; height: 70px;">
+                                        <i class="fab fa-firefox-browser fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Weboldal</h4>
+                                        <p class="mb-2">www.electro.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+{% endblock %}
